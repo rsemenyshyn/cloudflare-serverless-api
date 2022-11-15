@@ -1,7 +1,11 @@
 name = "serverless-api"
 type = "webpack"
-account_id = "dc56444c4c955a1653106ccf997c1067"
+account_id = "429a6dc7ecb147cba6b6d72a991845e3"
 workers_dev = true
 route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
+
+kv_namespaces = [
+    { binding = "TEST", id = "f2a3e189d6374a2582f0fc1cd160b9a6" }
+]

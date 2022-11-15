@@ -1,15 +1,15 @@
-import Store from '../posts_store'
+import { KVNamespace } from '@cloudflare/workers-types';
 
-const Post = async request => {
-  const posts = new Store()
-  const postId = request.params.id
+declare const TEST: KVNamespace;
 
-  const body = JSON.stringify(await posts.find(postId))
+const Post = async (request: any) => {
+  const postId = request.params.id;
+  const post = await TEST.get('post_' + postId);
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-type': 'application/json'
-  }
-  return new Response(body, { headers })
+  };
+  return new Response(post, { headers });
 }
 
-export default Post
+export default Post;
