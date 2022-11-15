@@ -28,10 +28,37 @@ This template uses [`prettier`](https://prettier.io/) to format the project. To 
 
 For information on how to preview and publish your worker, please see the [Wrangler docs](https://developers.cloudflare.com/workers/tooling/wrangler/commands/#publish).
 
-## 🤢 Issues
+## 📁 KV Database
 
-If you run into issues with this specific project, please feel free to file an issue [here](https://github.com/cloudflare/workers-typescript-template/issues). If the problem is with Wrangler, please file an issue [here](https://github.com/cloudflare/wrangler/issues).
+To get KV Database created, please execute the following
 
-## ⚠️ Caveats
+```shell
+wrangler kv:namespace create <YOUR_NAMESPACE>
+🌀  Creating namespace with title <YOUR_WORKER-YOUR_NAMESPACE>
+✨  Success!Add the following to your configuration file:
+kv_namespaces = [
+  { binding = <YOUR_BINDING>, id = "xxxxxxxxxxxxxxxxx" }
+]
+```
 
-The `service-worker-mock` used by the tests is not a perfect representation of the Cloudflare Workers runtime. It is a general approximation. We recommend that you test end to end with `wrangler dev` in addition to a [staging environment](https://developers.cloudflare.com/workers/tooling/wrangler/configuration/environments/) to test things before deploying.
+In our case namespace is named TEST.
+Next, in your `wrangler.toml file`, add the following with the values generated in your terminal, just like in the example here.
+
+Now you can use it in JS file by
+
+```javascript
+import { KVNamespace } from '@cloudflare/workers-types';
+declare const <YOUR_BINDING>: KVNamespace;
+```
+
+which is in our case:
+
+```javascript
+import { KVNamespace } from '@cloudflare/workers-types';
+declare const TEST: KVNamespace;
+
+...
+
+const post = await TEST.get('post_' + postId);
+const posts = await TEST.list({ prefix: 'post_' });
+```
